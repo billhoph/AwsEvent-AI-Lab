@@ -1,0 +1,53 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: portkey-gateway
+  namespace: ai-stack
+  labels:
+    app: portkey-gateway
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: portkey-gateway
+  template:
+    metadata:
+      labels:
+        app: portkey-gateway
+    spec:
+      containers:
+        - name: gateway
+          image: portkeyai/gateway:latest
+          ports:
+            - containerPort: 8787
+              name: proxy
+          resources:
+            requests:
+              cpu: "250m"
+              memory: 512Mi
+            limits:
+              cpu: "500m"
+              memory: 1Gi
+          # Portkey configurations can be adjusted via environment variables
+          env:
+            - name: PORT
+              value: "8787"
+            # Disable cloud metrics syncing for a strictly offline local cluster
+            - name: TELEMETRY
+              value: "false"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: portkey-service
+  namespace: ai-stack
+spec:
+  type: ClusterIP
+  ports:
+    - port: 8787
+      targetPort: 8787
+      protocol: TCP
+      name: proxy
+  selector:
+    app: portkey-gateway

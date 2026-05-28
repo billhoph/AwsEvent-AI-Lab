@@ -1,1 +1,2 @@
+python3 -m garak --model_type ollama --model_name qwen3:0.6b --probes all
 python3 -m garak --target_type huggingface --target_name gpt2 --probes dan.Dan_11_0

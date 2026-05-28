@@ -1,0 +1,5 @@
+pip install bandit==1.8.5
+bandit --help
+
+#doing the scanning
+bandit -r . 

@@ -9,3 +9,7 @@ pip install modelscan==0.8.5
 
 # 4. Scan the modesl
 modelscan -p xxx.h5
+
+python3 train-benign-keras-model.py
+python3 keras-model-consumer.py
+
